@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Homepage{% endblock %}
+{% block body %}
+  <!-- 左上角 bar：Homepage -->
+  <div style="border-bottom: 1px solid rgb(25, 156, 212); text-align: left; padding: 10px;">
+    <h1 style="text-align: center; margin: 0; display: inline;">Homepage</h1>
+  </div>
+
+  <form action = '/' method = "post">
+    <input type = "text" name = "Path" placeholder = "Enter the path of file or folder you want to open" style = "width: 100%; padding: 10px; margin-top: 20px; box-sizing: border-box;">
+    <button type = "submit" style = "width: 100%; padding: 10px; margin-top: 10px; background-color: rgb(25, 156, 212); color: rgb(23, 241, 205); border: none; cursor: pointer;">Open</button>
+  </form>
+
+
+
+  <!-- 脚注：固定在页面底部 -->
+  <div style="border-top: 1px solid rgb(0, 0, 0); position: fixed; bottom: 0; left: 0; width: 100%; box-sizing: border-box; padding: 10px; font-size: 15px; text-align: center;">
+    <a href="/about" class = "homepagelink">About</a>
+    <a href="/repo" class = "homepagelink">Repository</a>
+  </div>
+
+{% if prompt %}
+<script>
+  window.addEventListener("load", function () {
+    Swal.fire({
+      icon: "{{ 'success' if 'success' in prompt else 'error' }}",
+      title: "{{ prompt }}",
+      timer: 2000,
+      showConfirmButton: false
+    });
+  });
+</script>
+{% endif %}
+{% endblock %}
