@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}Homepage{% endblock %}
+{% block body %}
+<div class="login-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; width: 100%;">
+    <form action="/register" method="POST" class="glass-form" style="display: flex; flex-direction: column; width: 100%; max-width: 400px; padding: 40px; box-sizing: border-box; gap: 15px;">
+
+        <h2 class="form-title" style="text-align: center; margin-bottom: 25px;">Sign up</h2>
+
+        <input type="text" name="email" placeholder="Email" required class="glass-input" style="width: 100%; padding: 15px; box-sizing: border-box;">
+
+        <!-- Username Input -->
+        <input type="text" name="username" placeholder="Username" required class="glass-input" style="width: 100%; padding: 15px; box-sizing: border-box; margin-bottom: 0;">
+
+        <!-- Alert Prompt Container (Appears right under username) -->
+        <div id="alert-container" style="min-height: 20px; margin-top: -10px; margin-bottom: 5px; text-align: left; padding-left: 5px;">
+            {% if prompt %}
+            <span id="prompt-text" style="color: #ff4d4d; font-size: 13px; font-weight: 500;">{{ prompt }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Password Input -->
+        <input type="password" name="password" placeholder="Password" required class="glass-input" style="width: 100%; padding: 15px; box-sizing: border-box;">
+
+        <input type="text" name="phonenumber" placeholder="Phone Number" class="glass-input" style="width: 100%; padding: 15px; box-sizing: border-box;">
+
+        <!-- The Button -->
+        <button type="submit" class="glass-button" style="width: 100%; padding: 15px; margin-top: 10px; cursor: pointer;">Sign up</button>
+
+    </form>
+</div>
+
+{% if prompt %}
+<script>
+    // Simple browser alert
+    alert("{{ prompt }}");
+</script>
+{% endif %}
+
+{% endblock %}
