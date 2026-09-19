@@ -1,0 +1,83 @@
+
+    /* Reset body margins so the background touches the edges */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* 1. Background Image Styles */
+    .bg-image {
+        position: fixed; /* Sticks to the screen, even if scrolling */
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('background1.jpg');
+        background-size: cover; /* Ensures the image covers the whole screen */
+        background-position: center;
+        z-index: -1; /* Puts the image behind everything else */
+    }
+
+    /* 2. Sidebar Styles */
+    .glass-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 80px; /* Width of the vertical bar */
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start; /* Align buttons to the top */
+        padding-top: 30px;
+        gap: 20px; /* Space between buttons */
+
+        /* --- LIQUID GLASS EFFECT --- */
+        background: rgba(255, 255, 255, 0.08); /* Very transparent white */
+        backdrop-filter: blur(20px);           /* The blurring magic */
+        -webkit-backdrop-filter: blur(20px);   /* Safari support */
+        border-right: 1px solid rgba(255, 255, 255, 0.15); /* Subtle border */
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3); /* Shadow to separate from bg */
+    }
+
+    /* 3. Glass Button Styles */
+    .glass-nav-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 10px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+
+        /* Subtle glass effect for individual buttons */
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-nav-button .icon {
+        font-size: 20px;
+        margin-bottom: 4px;
+    }
+
+    /* Hover Effect for Buttons */
+    .glass-nav-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 4. Main Content Positioning */
+    .main-content {
+        /* Push content to the right so it doesn't hide behind the sidebar */
+        margin-left: 100px;
+        padding: 40px;
+        color: white; /* Make text visible against the dark background */
+    }

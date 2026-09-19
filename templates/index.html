@@ -1,22 +1,38 @@
+
 {% extends "layout.html" %}
+{% block style %}
+<link rel="stylesheet" href="/static/index.css">
+{% endblock %}
 {% block title %}Homepage{% endblock %}
 {% block body %}
-<div class="login-container">
-    <form action="/" method="POST" class="glass-form">
-        <h2 class="form-title">Sign In</h2>
 
-        <!-- Username Input -->
-        <input type="text" name="username" placeholder="Username" required class="glass-input">
+<!-- 1. The Background Image (p2) -->
+<div class="bg-image"></div>
 
-        <!-- Password Input -->
-        <input type="password" name="password" placeholder="Password" required class="glass-input">
-
-        <!-- The Button -->
-        <button type="submit" class="glass-button">Sign in</button>
-    </form>
+<!-- 2. The Liquid Glass Sidebar (p3) -->
+<div class="glass-sidebar">
+    {% if prompt %}
+    <a href="/homepage/{{prompt}}" class="glass-nav-button">
+        <span class="icon">🏠</span> Homepage
+    </a>
+    {% else %}
+    <a href="/login" class="glass-nav-button">
+        <span class="icon">🏠</span> Homepage
+    </a>
+    {% endif %}
+    <!-- You can add more buttons here later -->
+    <a href="/about" class="glass-nav-button">
+        <span class="icon">ℹ️</span> About
+    </a>
 </div>
 
+<!-- 3. Your existing main content goes here -->
+<div class="main-content">
+    <h1>Welcome</h1>
+    <p>Your login form or other content can go here.</p>
+</div>
 
+<!-- 4. Styles for this specific page -->
 
 
   <!-- 脚注：固定在页面底部 -->

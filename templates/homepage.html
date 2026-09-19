@@ -1,4 +1,4 @@
-{% extends layout.html %}
+{% extends "layout.html" %}
 {% block title %}
 homepage
 {% endblock %}
@@ -13,6 +13,8 @@ homepage
     <input type = "text" name = "Path" placeholder = "Enter the path of file or folder you want to open" style = "width: 100%; padding: 10px; margin-top: 20px; box-sizing: border-box;">
     <button type = "submit" style = "width: 100%; padding: 10px; margin-top: 10px; background-color: rgb(25, 156, 212); color: rgb(23, 241, 205); border: none; cursor: pointer;">Open</button>
   </form>
+
+  <button id = "back" type = "button" style = "width: 100%; padding: 10px; margin-top: 10px; background-color: rgb(25, 156, 212); color: rgb(23, 241, 205); border: none; cursor: pointer;">back</button>
 {% if prompt %}
 <script>
   window.addEventListener("load", function () {
@@ -22,7 +24,23 @@ homepage
       timer: 2000,
       showConfirmButton: false
     });
+    window.location.href = "/";
+
+  });
+  window.addEventListener("load",function(){
+    const button = document.getElementById("back");
+    button.addEventListener("click",function(){
+      window.location.href = "/";
+    });
   });
 </script>
 {% endif %}
+<script>
+  window.addEventListener("load",function(){
+    const button = document.getElementById("back");
+    button.addEventListener("click",function(){
+      window.location.href = "/";
+    });
+  });
+</script>
 {% endblock %}
