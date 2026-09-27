@@ -1,21 +1,40 @@
 {% extends "layout.html" %}
+{% block style %}
+<link rel = "stylesheet" type = "text/css" href = "/static/homepage.css">
+{% endblock %}
 {% block title %}
 homepage
 {% endblock %}
 {% block body %}
-<div style="border-bottom: 1px solid rgb(25, 156, 212); text-align: left; padding: 10px;">
-    <h1 style="text-align: center; margin: 0; display: inline;">Homepage</h1>
-  </div>
+<div class = "bg-image"></div>
+<div class="glass-sidebar">
+    <a href="/homepage/{{ session['user'] }}" class="glass-nav-button">
+        <span class="icon">🏠</span> Home
+    </a>
+    <a href="/about" class="glass-nav-button">
+        <span class="icon">ℹ️</span> About
+    </a>
+</div>
 
+<!-- 2. The Main Content (Upload form goes here) -->
+<div class="main-content">
+    <h1>Welcome, {{ session['user'] }}</h1>
+    <p>Upload files or a folder below.</p>
 
+    <div class="upload-card">
+        <form method="POST" enctype="multipart/form-data">
+            <label class="upload-label">Select Files or Folder:</label>
 
-  <form method = "post">
-    <input type = "text" name = "Path" placeholder = "Enter the path of file or folder you want to open" style = "width: 100%; padding: 10px; margin-top: 20px; box-sizing: border-box;">
-    <button type = "submit" style = "width: 100%; padding: 10px; margin-top: 10px; background-color: rgb(25, 156, 212); color: rgb(23, 241, 205); border: none; cursor: pointer;">Open</button>
-  </form>
+            <input type="file" name="file" multiple class="file-input">
+            <input type="file" name="file" webkitdirectory directory multiple class="file-input">
 
-  <button id = "back" type = "button" style = "width: 100%; padding: 10px; margin-top: 10px; background-color: rgb(25, 156, 212); color: rgb(23, 241, 205); border: none; cursor: pointer;">back</button>
-{% if prompt %}
+            <button type="submit" class="glass-button">Upload</button>
+        </form>
+    </div>
+
+    <button id="back" type="button" class="glass-button" style="margin-top: 20px;">Back</button>
+</div>
+  {% if prompt %}
 <script>
   window.addEventListener("load", function () {
     Swal.fire({

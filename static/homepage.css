@@ -1,0 +1,102 @@
+/* --- 1. The Sidebar (Fixed Width) --- */
+.glass-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 120px;              /* Adjust this to make it wider/narrower */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+    gap: 20px;
+
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 100;
+}
+
+/* --- 2. Main Content (Pushed to the right) --- */
+.main-content {
+    margin-left: 120px;        /* MUST match sidebar width */
+    padding: 40px;
+    min-height: 100vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* Centers content horizontally */
+    justify-content: center;  /* Centers content vertically */
+    box-sizing: border-box;
+}
+
+/* --- 3. The Upload Card (Liquid Glass) --- */
+.upload-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* --- 4. Inputs and Labels --- */
+.upload-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 5px;
+}
+
+.file-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* --- 5. Navigation Buttons (Sidebar) --- */
+.glass-nav-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 10px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-nav-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+.bg-image {
+        position: fixed; /* Sticks to the screen, even if scrolling */
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('background1.jpg');
+        background-size: cover; /* Ensures the image covers the whole screen */
+        background-position: center;
+        z-index: -1; /* Puts the image behind everything else */
+}

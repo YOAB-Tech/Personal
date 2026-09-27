@@ -13,17 +13,22 @@
 <div class="glass-sidebar">
     {% if prompt %}
     <a href="/homepage/{{prompt}}" class="glass-nav-button">
-        <span class="icon">🏠</span> Homepage
+        <img src = "/static/home.png" alt = "Home" class = "icon">
+        Homepage
     </a>
     {% else %}
     <a href="/login" class="glass-nav-button">
-        <span class="icon">🏠</span> Homepage
+        <img src = "/static/home.png" alt = "Home" class = "icon">
+        Homepage
     </a>
     {% endif %}
     <!-- You can add more buttons here later -->
-    <a href="/about" class="glass-nav-button">
-        <span class="icon">ℹ️</span> About
+    <a href="/repo" class="glass-nav-button">
+        <img src = "/static/repo.png" alt = "Repo" class = "icon">
+        Repository
     </a>
+    <a href="/about" class = "homepagelink">Contact</a>
+
 </div>
 
 <!-- 3. Your existing main content goes here -->
@@ -35,11 +40,7 @@
 <!-- 4. Styles for this specific page -->
 
 
-  <!-- 脚注：固定在页面底部 -->
-<div style="border-top: 1px solid rgb(0, 0, 0); position: fixed; bottom: 0; left: 0; width: 100%; box-sizing: border-box; padding: 10px; font-size: 15px; text-align: center;">
-  <a href="/about" class = "homepagelink">About</a>
-  <a href="/repo" class = "homepagelink">Repository</a>
-</div>
+
 
 
 {% endblock %}

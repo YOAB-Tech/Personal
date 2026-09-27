@@ -16,24 +16,15 @@ class User(db.Model):
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=True)
     phonenumber = db.Column(db.String(80), unique=True, nullable=True)
-    filepath = db.Column(db.String(80), unique=True, nullable=True)
+    file = db.Column(db.String(80), unique=True, nullable=True)
     def __repr__(self):
         return f"User('{self.username}')"
-def write_to_static(ogpath,localpath):
-    src = Path(ogpath)
-    result = Path(localpath)
-    result.parent.mkdir(parents= True, exist_ok= True)
-    if not src.is_dir():
-        shutil.copy2(src,result)
-    shutil.copytree(src,result,dirs_exist_ok=True)
-    return "Resolved path successfully"
-
     
 id = 0
 
 @app.route('/')
 def index():
-    user = session['username']
+    user = session.get('user')
     return render_template("index.html", prompt = user)
 
 @app.route('/login', methods=['GET','POST'])
@@ -44,7 +35,7 @@ def login():
         result = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
         if result:
             if password == result.password:
-                session['username'] = result.username
+                session['user'] = result.username
                 return redirect(f"/homepage/{result.username}")
             else:
                 return render_template("login.html",prompt = "Password does not match")
@@ -63,21 +54,30 @@ def register():
         if result:
             return render_template("register.html", prompt = "Username already exists")
         id = id +1
-        user = User(id = id, username = username, password = password, email = email, phonenumber = phonenumber, filepath = None)
+        user = User(id = id, username = username, password = password, email = email, phonenumber = phonenumber, file = None)
         db.session.add(user)
         db.session.commit()
-        return render_template("login.html")
+        return redirect("/login")
     return render_template("register.html")
 
 @app.route('/homepage/<string:username>', methods=['GET', 'POST'])
 def homepage(username):
-    if 'username' not in session or session.get('username') is None:
+    if 'user' not in session or session.get('user') is None:
         return redirect("/login")
     if request.method == 'POST':
-        path = request.form.get("Path")
-        p = Path(path)
-        report = write_to_static(path,Path("Repo") / p.name )
-        return render_template("homepage.html", prompt=report)
+        Path(f'Repo/{username}').mkdir(parents=True, exist_ok= True)
+        personalfolder = Path(f'Repo/{username}')
+        path = request.files.getlist("file")
+        for file in path:
+            relativepath = file.filename
+            safe_path = Path(relativepath).as_posix()
+            if '..'in safe_path or safe_path.startswith('/'):
+                continue;
+            dest = personalfolder / relativepath
+            dest.parent.mkdir(parents=True, exist_ok= True)
+            user = User.query.filter_by(username = username).first()
+            file.save(dest)
+        return render_template("homepage.html", prompt="Added!")
     return render_template("homepage.html")
 
 @app.route('/about',methods=['GET', 'POST'])
