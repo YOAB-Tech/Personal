@@ -28,7 +28,8 @@
         Repository
     </a>
     <a href="/about" class = "homepagelink">Contact</a>
-
+    <button id = "login" class = "glass-button">Log in</button>
+    <button id = "logout" class = "glass-button">Log out</button>
 </div>
 
 <!-- 3. Your existing main content goes here -->
@@ -38,9 +39,16 @@
 </div>
 
 <!-- 4. Styles for this specific page -->
-
-
-
-
-
+<script>
+    window.addEventListener("load", function(){
+        let buttonlogout = document.getElementById("logout");
+        buttonlogout.addEventListener("click",function(){
+            fetch("/logout")
+                .then(function () {
+                    console.log("Session cleared")
+                    window.location.href('/')
+                })
+        })
+    })
+</script>
 {% endblock %}

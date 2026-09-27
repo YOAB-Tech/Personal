@@ -3,6 +3,9 @@ from pathlib import Path
 from flask_sqlalchemy import SQLAlchemy
 import shutil
 import sqlite3
+
+from sqlalchemy import null
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.sqlite3'
 app.config['SECRET_KEY'] = 'mysterious_yoab_admin_SECRET_KEY_cookie'
@@ -19,8 +22,6 @@ class User(db.Model):
     file = db.Column(db.String(80), unique=True, nullable=True)
     def __repr__(self):
         return f"User('{self.username}')"
-    
-id = 0
 
 @app.route('/')
 def index():
@@ -50,10 +51,13 @@ def register():
         password = request.form.get("password")
         email = request.form.get("email")
         phonenumber = request.form.get("phoneNumber")
-        result = db.session.execute(db.select(User).where(username == username)).scalar_one_or_none()
+        result = db.session.execute(db.select(User).where(User.username == username or User.email == email)).scalar_one_or_none()
         if result:
-            return render_template("register.html", prompt = "Username already exists")
-        id = id +1
+            if result.email == email:
+                return render_template("register.html", prompt = "Email already exists")
+            if result.username == username:
+                return render_template("register.html", prompt = "Username already exists")
+        id = db.session.execute(db.select(db.func.count()).select_from(User)).scalar()+1
         user = User(id = id, username = username, password = password, email = email, phonenumber = phonenumber, file = None)
         db.session.add(user)
         db.session.commit()
@@ -69,16 +73,24 @@ def homepage(username):
         personalfolder = Path(f'Repo/{username}')
         path = request.files.getlist("file")
         for file in path:
+            if not file.filename:
+                continue
             relativepath = file.filename
             safe_path = Path(relativepath).as_posix()
             if '..'in safe_path or safe_path.startswith('/'):
-                continue;
+                continue
             dest = personalfolder / relativepath
             dest.parent.mkdir(parents=True, exist_ok= True)
-            user = User.query.filter_by(username = username).first()
             file.save(dest)
-        return render_template("homepage.html", prompt="Added!")
-    return render_template("homepage.html")
+        user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
+        user.file = username
+        db.session.commit()
+        return render_template("homepage.html", prompt="Successfully Added!", username = username)
+    user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
+    if user.file is None:
+        return render_template("homepage.html")
+    else:
+        return render_template("homepageexist.html")
 
 @app.route('/about',methods=['GET', 'POST'])
 def about():
@@ -92,6 +104,10 @@ def repo():
     
     return render_template("Repo.html")
 
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect("/")
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

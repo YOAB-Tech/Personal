@@ -34,7 +34,7 @@ homepage
 
     <button id="back" type="button" class="glass-button" style="margin-top: 20px;">Back</button>
 </div>
-  {% if prompt %}
+{% if prompt %}
 <script>
   window.addEventListener("load", function () {
     Swal.fire({
@@ -43,9 +43,13 @@ homepage
       timer: 2000,
       showConfirmButton: false
     });
-    window.location.href = "/";
+
+    window.location.href = "/homepage/{{ session['user'] }}";
 
   });
+</script>
+{% endif %}
+<script>
   window.addEventListener("load",function(){
     const button = document.getElementById("back");
     button.addEventListener("click",function(){
@@ -53,7 +57,7 @@ homepage
     });
   });
 </script>
-{% endif %}
+
 <script>
   window.addEventListener("load",function(){
     const button = document.getElementById("back");
