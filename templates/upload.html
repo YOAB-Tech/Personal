@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="/static/upload.css">
+{% endblock %}
+{% block title %}Upload{% endblock %}
+{% block body %}
+
+<!-- Background glows -->
+<div class="background-glow glow-1"></div>
+<div class="background-glow glow-2"></div>
+
+<!-- Top bar -->
+<div class="upload-topbar">
+    <a href="/homepage/{{ session['user'] }}" class="back-link">
+        ← Back to workspace
+    </a>
+    <div class="topbar-title">{{ session['user'] }} / upload</div>
+</div>
+
+<!-- Main layout -->
+<div class="upload-container">
+
+    <!-- LEFT: labels + upload button -->
+    <div class="upload-left">
+
+        <div class="upload-header">
+            <h1>Upload files</h1>
+            <p>Choose a folder, pick some files, then upload.</p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data"
+              class="upload-form" >
+            <!-- Drop zones -->
+            <label class="drop-zone" for="folder-input">
+                <div class="drop-icon">📁</div>
+                <div class="drop-text">
+                    <div class="drop-title">Choose a folder</div>
+                    <div class="drop-subtitle">Upload an entire folder with its structure.</div>
+                </div>
+            </label>
+
+            <label class="drop-zone" for="file-input">
+                <div class="drop-icon">📄</div>
+                <div class="drop-text">
+                    <div class="drop-title">Choose files</div>
+                    <div class="drop-subtitle">Pick one or more files from your computer.</div>
+                </div>
+            </label>
+
+            <!-- Hidden inputs -->
+            <input id="file-input" type="file" name="file" multiple hidden>
+            <input id="folder-input" type="file" name="file"
+                   webkitdirectory directory multiple hidden>
+
+            <!-- Upload button -->
+            <div class="upload-actions">
+                <button type="submit" class="primary-button">Upload</button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- RIGHT: live preview of selected files -->
+    <div class="upload-right">
+
+        <div class="preview-header">
+            <span class="preview-title">Selected files</span>
+            <span class="preview-count" id="preview-count">0 files</span>
+            <span class="preview-count" id = "preview-size">0MB</span>
+        </div>
+
+        <div class="preview-list" id="preview-list">
+
+            <!-- Example row (JS will replace this with real entries) -->
+            <div class="preview-row">
+                <span class="preview-icon">📄</span>
+                <span class="preview-name">intro.md</span>
+                <span class="preview-size">4 KB</span>
+            </div>
+
+            <!-- Empty state (hide when files are added) -->
+            <div class="preview-empty" id="preview-empty">
+                <div class="preview-empty-icon">📂</div>
+                <p>Nothing selected yet</p>
+                <span>Your files will appear here once you choose them.</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="/static/upload.js"></script>
+
+{% endblock %}

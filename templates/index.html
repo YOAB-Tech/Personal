@@ -46,8 +46,16 @@
             fetch("/logout")
                 .then(function () {
                     console.log("Session cleared")
-                    window.location.href('/')
+                    window.location.href = '/'
                 })
+        })
+    })
+</script>
+<script>
+    window.addEventListener("load", function(){
+        let buttonlogin = document.getElementById("login");
+        buttonlogin.addEventListener("click", function(){
+            window.location.href = '/login'
         })
     })
 </script>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang = 'en'>
+<html lang='en'>
     <head>
-        <meta name = "viewport" content = "initial-scale = 1, width = device-width" charset="utf-8">
+        <meta name="viewport" content="initial-scale = 1, width = device-width" charset="utf-8">
         {% block style %}{% endblock %}
         <title>
             {% block title %}{% endblock %}
@@ -9,6 +9,8 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
+        <div class="background-glow glow-1"></div>
+        <div class="background-glow glow-2"></div>
         {% block body %}
         {% endblock %}
     </body>

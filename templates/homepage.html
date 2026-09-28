@@ -1,12 +1,14 @@
 {% extends "layout.html" %}
 {% block style %}
-<link rel = "stylesheet" type = "text/css" href = "/static/homepage.css">
+<link rel="stylesheet" type="text/css" href="/static/homepage.css">
 {% endblock %}
-{% block title %}
-homepage
-{% endblock %}
+{% block title %}Homepage{% endblock %}
 {% block body %}
-<div class = "bg-image"></div>
+
+<!-- Background image -->
+<div class="bg-image"></div>
+
+<!-- Sidebar -->
 <div class="glass-sidebar">
     <a href="/homepage/{{ session['user'] }}" class="glass-nav-button">
         <span class="icon">🏠</span> Home
@@ -14,56 +16,82 @@ homepage
     <a href="/about" class="glass-nav-button">
         <span class="icon">ℹ️</span> About
     </a>
+    <a href="/repo" class="glass-nav-button">
+        <span class="icon">📁</span> Repository
+    </a>
 </div>
 
-<!-- 2. The Main Content (Upload form goes here) -->
+<!-- Main content -->
 <div class="main-content">
-    <h1>Welcome, {{ session['user'] }}</h1>
-    <p>Upload files or a folder below.</p>
 
-    <div class="upload-card">
-        <form method="POST" enctype="multipart/form-data">
-            <label class="upload-label">Select Files or Folder:</label>
-
-            <input type="file" name="file" multiple class="file-input">
-            <input type="file" name="file" webkitdirectory directory multiple class="file-input">
-
-            <button type="submit" class="glass-button">Upload</button>
-        </form>
+    <!-- Repo header -->
+    <div class="repo-header">
+        <div class="repo-title">
+            <span class="repo-icon">📁</span>
+            <div>
+                <h1>{{ session['user'] }} / workspace</h1>
+                <p class="repo-subtitle">Your uploaded files and folders</p>
+            </div>
+        </div>
+        {% if file_existence %}
+        <a href="/upload/{{ session['user'] }}" class="primary-button">
+            <span>＋</span> Upload Files
+        </a>
+        {% endif %}
     </div>
 
-    <button id="back" type="button" class="glass-button" style="margin-top: 20px;">Back</button>
+    <!-- File list (folder-style) -->
+    <div class="file-list">
+        {% if file_existence %}
+        <div class="file-list-header">
+            <span class="col-name">Name</span>
+            <span class="col-size">Size</span>
+            <span class="col-modified">Modified</span>
+        </div>
+
+        <!-- FOLDER ROW -->
+        <div class="file-row folder">
+            <span class="file-icon">📁</span>
+            <span class="file-name">my_folder/</span>
+            <span class="file-size">—</span>
+            <span class="file-modified">2 hours ago</span>
+        </div>
+
+        <!-- FILE ROW -->
+        <div class="file-row">
+            <span class="file-icon">📄</span>
+            <span class="file-name">intro.md</span>
+            <span class="file-size">4 KB</span>
+            <span class="file-modified">2 hours ago</span>
+        </div>
+
+        <!-- FILE ROW -->
+        <div class="file-row">
+            <span class="file-icon">🖼️</span>
+            <span class="file-name">background1.jpg</span>
+            <span class="file-size">1.2 MB</span>
+            <span class="file-modified">yesterday</span>
+        </div>
+
+        <!-- FILE ROW -->
+        <div class="file-row">
+            <span class="file-icon">📄</span>
+            <span class="file-name">notes.txt</span>
+            <span class="file-size">820 B</span>
+            <span class="file-modified">3 days ago</span>
+        </div>
+        {% endif %}
+
+        <div class="file-empty" id = 'file-empty'>
+            <div class="empty-icon">📂</div>
+            <p>No files yet</p>
+            <a href="/upload/{{ session['user'] }}" class="secondary-button">Upload your first file</a>
+        </div>
+
+
+    </div>
+
 </div>
-{% if prompt %}
-<script>
-  window.addEventListener("load", function () {
-    Swal.fire({
-      icon: "{{ 'success' if 'success' in prompt else 'error' }}",
-      title: "{{ prompt }}",
-      timer: 2000,
-      showConfirmButton: false
-    });
+<script src="/static/homepage.js"></script>
 
-    window.location.href = "/homepage/{{ session['user'] }}";
-
-  });
-</script>
-{% endif %}
-<script>
-  window.addEventListener("load",function(){
-    const button = document.getElementById("back");
-    button.addEventListener("click",function(){
-      window.location.href = "/";
-    });
-  });
-</script>
-
-<script>
-  window.addEventListener("load",function(){
-    const button = document.getElementById("back");
-    button.addEventListener("click",function(){
-      window.location.href = "/";
-    });
-  });
-</script>
 {% endblock %}

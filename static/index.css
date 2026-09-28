@@ -1,115 +1,161 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: "Times New Roman", Georgia, serif;
-    background-color: #f7f7f8;
-    color: #1a1a1a;
-}
-
-.bg-image {
-    position: fixed;
-    inset: 0;
-    background-image: url('background1.jpg');
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
-    opacity: 0.08;
-}
 /* =========================================================
-   SIDEBAR
+   SIDEBAR — dark glass style
    ========================================================= */
 .glass-sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    width: 260px;              /* ← CHANGE SIDEBAR WIDTH HERE */
+    width: 260px;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 90px 0;           /* 0 horizontal so items touch the edges */
+    padding: 24px 12px;
     box-sizing: border-box;
-    gap: 50px;                    /* ← CHANGE GAP BETWEEN ITEMS HERE */
+    gap: 4px;
 
-    background: #f0f0f2;
-    border-right: 1px solid #e5e5e7;
+    background: #0d0d11;
+    border-right: 1px solid #202028;
 }
 
-/* =========================================================
-   NAV ITEMS  (Homepage / About button)
-   ========================================================= */
+/* Section labels inside sidebar */
+.glass-sidebar h2,
+.glass-sidebar h3,
+.glass-sidebar p {
+    font-size: 11px;
+    font-weight: 600;
+    color: #60606a;
+    margin: 18px 8px 6px 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Nav items */
 .glass-nav-button {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: 12px;                 /* ← CHANGE GAP BETWEEN ICON AND TEXT */
+    gap: 12px;
 
     width: 100%;
-    height: auto;
-    padding: 10px 16px;        /* ← CHANGE PADDING HERE (top/bottom, left/right) */
+    padding: 11px 12px;
     box-sizing: border-box;
 
-    border-radius: 0;          /* ✅ NO ROUNDED CORNERS */
+    border-radius: 8px;
     border: none;
     background: transparent;
-    color: #1a1a1a;
-    font-size: 25px;           /* ← CHANGE TEXT SIZE */
+    color: #92929b;
+    font-size: 14px;
     font-weight: 500;
     text-decoration: none;
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: 0.2s;
 }
 
 .glass-nav-button:hover {
-    background: #e2e2e5;
+    background: #1b1b22;
+    color: white;
 }
 
+.glass-nav-button.active {
+    background: #1b1b22;
+    color: white;
+}
+
+/* Icons */
 .glass-nav-button .icon,
 .glass-nav-button img.icon {
-    width: 18px;               /* ← CHANGE ICON SIZE */
+    width: 18px;
     height: 18px;
     margin: 0;
     flex-shrink: 0;
-    filter: grayscale(1) brightness(0.3);
+    filter: grayscale(1) brightness(2);
 }
 
 /* =========================================================
-   BOTTOM LINKS  (About / Repository) — pinned to bottom
-   ========================================================= */
-/* =========================================================
-   BOTTOM LINKS  (About / Repository)
+   BOTTOM LINKS (About / Repo / Contact)
    ========================================================= */
 .homepagelink {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 10px 16px;
+    padding: 11px 12px;
     box-sizing: border-box;
-    border-radius: 0;          /* No round corners */
+    border-radius: 8px;
     text-decoration: none;
-    color: #1a1a1a;
+    color: #92929b;
     font-size: 14px;
     font-weight: 500;
-    transition: background 0.15s ease;
+    transition: 0.2s;
 }
 
 .homepagelink:hover {
-    background: #e2e2e5;
+    background: #1b1b22;
+    color: white;
 }
 
-/* Pushes the FIRST bottom link (and everything after it) to the bottom */
+/* Push bottom links down */
 .glass-sidebar > .homepagelink:first-of-type {
     margin-top: auto;
+}
+
+/* Login / Logout buttons in the sidebar */
+.glass-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 11px 12px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid #292930;
+    background: #111116;
+    color: #f5f5f7;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.glass-button:hover {
+    border-color: #555563;
+    transform: translateY(-2px);
 }
 
 /* =========================================================
    MAIN CONTENT
    ========================================================= */
 .main-content {
-    margin-left: 260px;        /* ← MUST MATCH SIDEBAR WIDTH */
-    padding: 40px;
+    margin-left: 260px;
+    padding: 60px 40px;
     box-sizing: border-box;
     min-height: 100vh;
-    background: #ffffff;
-    color: #1a1a1a;
+    color: #f5f5f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-content h1 {
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: -3px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.main-content h1 span {
+    background: linear-gradient(100deg, #ffffff, #8c7cff, #62e7ff);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.main-content p {
+    color: #8d8d97;
+    font-size: 15px;
+    line-height: 1.7;
+    text-align: center;
+    max-width: 480px;
 }

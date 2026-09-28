@@ -1,102 +1,323 @@
-/* --- 1. The Sidebar (Fixed Width) --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background: #07070a;
+    color: #f5f5f7;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+.bg-image {
+    position: fixed;
+    inset: 0;
+    background-image: url('background1.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+    opacity: 0.25;
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.13;
+    pointer-events: none;
+    z-index: -1;
+}
+
+body::before {
+    background: #6c5ce7;
+    top: -300px;
+    left: -200px;
+}
+
+body::after {
+    background: #00d4ff;
+    right: -300px;
+    bottom: -300px;
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
 .glass-sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    width: 120px;              /* Adjust this to make it wider/narrower */
+    width: 260px;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-top: 30px;
-    gap: 20px;
-
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 24px 12px;
+    box-sizing: border-box;
+    gap: 4px;
+    background: #0d0d11;
+    border-right: 1px solid #202028;
     z-index: 100;
 }
 
-/* --- 2. Main Content (Pushed to the right) --- */
-.main-content {
-    margin-left: 120px;        /* MUST match sidebar width */
-    padding: 40px;
-    min-height: 100vh;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;      /* Centers content horizontally */
-    justify-content: center;  /* Centers content vertically */
-    box-sizing: border-box;
-}
-
-/* --- 3. The Upload Card (Liquid Glass) --- */
-.upload-card {
-    width: 100%;
-    max-width: 500px;
-    padding: 30px;
-    border-radius: 20px;
-
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* --- 4. Inputs and Labels --- */
-.upload-label {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 5px;
-}
-
-.file-input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-/* --- 5. Navigation Buttons (Sidebar) --- */
 .glass-nav-button {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 10px;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 12px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    color: #92929b;
+    font-size: 14px;
     font-weight: 500;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    transition: 0.2s;
 }
 
 .glass-nav-button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    background: #1b1b22;
+    color: white;
 }
-.bg-image {
-        position: fixed; /* Sticks to the screen, even if scrolling */
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-image: url('background1.jpg');
-        background-size: cover; /* Ensures the image covers the whole screen */
-        background-position: center;
-        z-index: -1; /* Puts the image behind everything else */
+
+.glass-nav-button .icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    filter: grayscale(1) brightness(2);
+}
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+.main-content {
+    margin-left: 260px;
+    padding: 50px 60px;
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+/* =========================================================
+   REPO HEADER
+   ========================================================= */
+.repo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #1d1d24;
+}
+
+.repo-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.repo-icon {
+    font-size: 32px;
+    filter: grayscale(1) brightness(2);
+}
+
+.repo-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #f5f5f7;
+}
+
+.repo-subtitle {
+    color: #6e6e78;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* Upload button */
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: white;
+    color: #08080a;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s;
+    box-shadow: 0 0 30px rgba(255,255,255,0.08);
+}
+
+.primary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 35px rgba(255,255,255,0.15);
+}
+
+.primary-button span {
+    font-size: 16px;
+}
+
+/* =========================================================
+   FILE LIST
+   ========================================================= */
+.file-list {
+    border: 1px solid #24242b;
+    border-radius: 14px;
+    background: #0d0d11;
+    overflow: hidden;
+}
+
+.file-list-header {
+    display: grid;
+    grid-template-columns: 1fr 120px 180px;
+    gap: 16px;
+    padding: 14px 20px;
+    background: #111116;
+    border-bottom: 1px solid #24242b;
+    font-size: 12px;
+    font-weight: 600;
+    color: #60606a;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.file-row {
+    display: grid;
+    grid-template-columns: 1fr 120px 180px;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid #1a1a20;
+    font-size: 14px;
+    color: #c5c5cc;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.file-row:last-child {
+    border-bottom: none;
+}
+
+.file-row:hover {
+    background: #16161c;
+}
+
+.file-row.folder .file-name {
+    font-weight: 600;
+    color: #f5f5f7;
+}
+
+.file-icon {
+    display: inline-block;
+    width: 20px;
+    margin-right: 10px;
+    text-align: center;
+    font-size: 15px;
+    filter: grayscale(1) brightness(2);
+    vertical-align: middle;
+}
+
+.file-name {
+    color: #c5c5cc;
+    vertical-align: middle;
+}
+
+.file-size,
+.file-modified {
+    color: #6e6e78;
+    font-size: 13px;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+.file-empty {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 48px;
+    opacity: 0.4;
+    margin-bottom: 20px;
+    filter: grayscale(1) brightness(2);
+}
+
+.file-empty p {
+    color: #6e6e78;
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: 1px solid #292930;
+    background: rgba(255,255,255,0.025);
+    color: #dddde2;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+.secondary-button:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: #555563;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+@media (max-width: 700px) {
+    .glass-sidebar {
+        width: 72px;
+        padding: 24px 8px;
+        align-items: center;
+    }
+
+    .glass-nav-button {
+        justify-content: center;
+        padding: 12px;
+        font-size: 0;
+        gap: 0;
+    }
+
+    .glass-nav-button .icon {
+        font-size: 20px;
+    }
+
+    .main-content {
+        margin-left: 72px;
+        padding: 30px 20px;
+    }
+
+    .repo-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .file-list-header,
+    .file-row {
+        grid-template-columns: 1fr 80px;
+    }
+
+    .col-modified,
+    .file-modified {
+        display: none;
+    }
 }

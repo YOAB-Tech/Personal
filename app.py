@@ -1,10 +1,10 @@
-from flask import render_template, redirect, request, Flask,session,url_for
+from flask import render_template, redirect, request, Flask, session, url_for, jsonify
 from pathlib import Path
 from flask_sqlalchemy import SQLAlchemy
 import shutil
 import sqlite3
 
-from sqlalchemy import null
+from sqlalchemy import null, JSON
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.sqlite3'
@@ -19,7 +19,7 @@ class User(db.Model):
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=True)
     phonenumber = db.Column(db.String(80), unique=True, nullable=True)
-    file = db.Column(db.String(80), unique=True, nullable=True)
+    file = db.Column(JSON,nullable=True)
     def __repr__(self):
         return f"User('{self.username}')"
 
@@ -68,10 +68,27 @@ def register():
 def homepage(username):
     if 'user' not in session or session.get('user') is None:
         return redirect("/login")
+    user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
+    file_existence = user.file
+    return render_template("homepage.html", file_existence = file_existence)
+
+@app.route('/about',methods=['GET', 'POST'])
+def about():
+    return render_template("about.html")
+
+
+@app.route('/repo',methods=['GET', 'POST'])
+def repo():
+    path = request.form.get("Path")
+    return render_template("Repo.html")
+
+@app.route('/upload/<string:username>',methods=['GET', 'POST'])
+def upload(username):
     if request.method == 'POST':
         Path(f'Repo/{username}').mkdir(parents=True, exist_ok= True)
         personalfolder = Path(f'Repo/{username}')
         path = request.files.getlist("file")
+        fileinfo = []
         for file in path:
             if not file.filename:
                 continue
@@ -82,27 +99,18 @@ def homepage(username):
             dest = personalfolder / relativepath
             dest.parent.mkdir(parents=True, exist_ok= True)
             file.save(dest)
+            file.seek(0,2)
+            filesize = file.tell()
+            file.seek(0)
+            fileinfo.append({
+                "filename" : file.filename,
+                "filepath": safe_path,
+                "filesize" : filesize
+            })
         user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
-        user.file = username
+
         db.session.commit()
-        return render_template("homepage.html", prompt="Successfully Added!", username = username)
-    user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
-    if user.file is None:
-        return render_template("homepage.html")
-    else:
-        return render_template("homepageexist.html")
-
-@app.route('/about',methods=['GET', 'POST'])
-def about():
-    return render_template("about.html")
-
-
-@app.route('/repo',methods=['GET', 'POST'])
-def repo():
-    path = request.form.get("Path")
-    
-    
-    return render_template("Repo.html")
+    return render_template("upload.html")
 
 @app.route('/logout')
 def logout():
