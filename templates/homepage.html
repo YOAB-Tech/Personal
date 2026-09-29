@@ -41,8 +41,7 @@
     </div>
 
     <!-- File list (folder-style) -->
-    <div class="file-list" id = "file-list">
-        {% if file_existence %}
+    <div class="file-list" id = "file-list" data-user = "{{ session['user'] }}">
         <div class="file-list-header">
             <span class="col-modified">Modified</span>
             <span class="col-name">Name</span>
@@ -80,7 +79,6 @@
             <span class="file-size">820 B</span>
             <span class="file-modified">3 days ago</span>
         </div>
-        {% endif %}
 
         <div class="file-empty" id = 'file-empty'>
             <div class="empty-icon">📂</div>

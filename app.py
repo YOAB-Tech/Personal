@@ -1,12 +1,12 @@
 from flask import render_template, redirect, request, Flask, session, url_for, jsonify
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timezone
 import shutil
 import sqlite3
-
 from sqlalchemy import null, JSON
 
+##DEFAULT SETTINGS
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.sqlite3'
 app.config['SECRET_KEY'] = 'mysterious_yoab_admin_SECRET_KEY_cookie'
@@ -20,9 +20,19 @@ class User(db.Model):
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=True)
     phonenumber = db.Column(db.String(80), unique=True, nullable=True)
-    file = db.Column(JSON,nullable=True)
+    file = db.Column(db.JSON,nullable=True)
     def __repr__(self):
         return f"User('{self.username}')"
+##DEFAULT SETTINGS
+#HELPING FUNCTION
+def totalsize(folder):
+    total = 0
+    for item in folder.rglob("*"):
+        if item.is_file():
+            total += item.stat().st_size
+        else:
+            total+=totalsize(item)
+    return total
 
 @app.route('/')
 def index():
@@ -76,8 +86,6 @@ def homepage(username):
 @app.route('/about',methods=['GET', 'POST'])
 def about():
     return render_template("about.html")
-
-
 @app.route('/repo',methods=['GET', 'POST'])
 def repo():
     path = request.form.get("Path")
@@ -103,14 +111,19 @@ def upload(username):
             file.seek(0,2)
             filesize = file.tell()
             file.seek(0)
+        for item in personalfolder.glob("*"):
             fileinfo.append({
-                "filename" : file.filename,
-                "filepath": safe_path,
-                "filesize" : filesize,
-                "date" : datetime.now()
-            })
+                "filename" : item.name,
+                "filepath" : item.name,
+                "filesize" : totalsize(item),
+                "date" : datetime.now(timezone.utc).isoformat(),
+                "is_dir" : item.is_dir()
+                })
         user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
-        user.file = fileinfo
+        if user.file is None:
+            user.file = fileinfo
+        else:
+            user.file.extend(fileinfo)
         db.session.commit()
     return render_template("upload.html")
 
@@ -118,8 +131,30 @@ def upload(username):
 def logout():
     session.pop('user', None)
     return redirect("/")
+
+#API SECTION
+@app.route('/api/files/<string:username>')
+def files(username):
+    user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
+    newfile = []
+    personalfolder = Path(f'Repo/{username}')
+    for item in personalfolder.glob("*"):
+        newfile.append({
+            "filename" : item.name,
+            "filepath" : item.name,
+            "filesize" : totalsize(item),
+            "date" : datetime.now(timezone.utc).isoformat(),
+            "is_dir" : item.is_dir()
+        })
+    user.file = newfile
+    db.session.commit()
+    return jsonify(user.file or [])
+
+#API SECTION
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
+
 
