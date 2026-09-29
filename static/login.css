@@ -7,114 +7,221 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background: #07070a;
-    font-family: "Inter", sans-serif;
-    color: #f5f5f7;
-    overflow: hidden;
-}
-
-/* Soft background glows */
-body::before,
-body::after {
-    content: "";
-    position: fixed;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.13;
-    pointer-events: none;
-    z-index: -1;
-}
-
-body::before {
-    background: #6c5ce7;
-    top: -300px;
-    left: -200px;
-}
-
-body::after {
-    background: #00d4ff;
-    right: -300px;
-    bottom: -300px;
+    background: #f8f9fc; /* Light gray/blue background */
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    color: #1a1a1a;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 /* =========================================================
-   LOGIN CARD
+   LOGIN/REGISTER CARD
    ========================================================= */
 .glass-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 40px 32px;
+    padding: 40px;
     width: 100%;
-    max-width: 380px;
-    border-radius: 18px;
-
-    background: #0d0d11;
-    border: 1px solid #292930;
-    box-shadow:
-        0 40px 100px rgba(0,0,0,0.6),
-        0 0 80px rgba(100,80,255,0.08);
+    max-width: 440px;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04), 0 2px 10px rgba(0, 0, 0, 0.02);
+    border: 1px solid #f0f0f5;
 }
 
 .form-title {
-    color: #f5f5f7;
+    color: #000000;
     text-align: center;
     margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 26px;
-    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 32px;
+    font-weight: 800;
     letter-spacing: -0.5px;
+}
+
+.form-subtitle {
+    text-align: center;
+    color: #666666;
+    font-size: 15px;
+    margin-bottom: 24px;
+    margin-top: 0;
+}
+
+/* =========================================================
+   INPUT LABELS & CONTAINERS
+========================= */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.input-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+    margin-left: 2px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    color: #4f46e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 16px;
+    color: #9ca3af;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
 /* =========================================================
    INPUTS
 ========================= */
 .glass-input {
-    padding: 13px 16px;
+    width: 100%;
+    padding: 14px 16px 14px 48px; /* Left padding for icon */
     font-family: inherit;
-    font-size: 14px;
-    border-radius: 9px;
-    border: 1px solid #292930;
-    background: #111116;
-    color: #f5f5f7;
+    font-size: 15px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #111;
     outline: none;
-    transition: 0.2s;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
 .glass-input::placeholder {
-    color: #60606a;
+    color: #9ca3af;
 }
 
 .glass-input:focus {
-    border-color: #8b7cff;
-    box-shadow: 0 0 0 3px rgba(139, 124, 255, 0.15);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* =========================================================
+   RADIO BUTTONS (Gender)
+========================= */
+.radio-group {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.radio-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #fff;
+}
+
+.radio-option:hover {
+    border-color: #d1d5db;
+    background: #f9fafb;
+}
+
+.radio-option input[type="radio"] {
+    accent-color: #4f46e5;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+}
+
+.radio-option label {
+    font-size: 15px;
+    font-weight: 500;
+    color: #111;
+    cursor: pointer;
+}
+
+/* =========================================================
+   CHECKBOX
+========================= */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    accent-color: #4f46e5;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    font-size: 14px;
+    color: #4b5563;
+    cursor: pointer;
+}
+
+.checkbox-group a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.checkbox-group a:hover {
+    text-decoration: underline;
 }
 
 /* =========================================================
    BUTTON
 ========================= */
 .glass-button {
-    padding: 13px;
+    width: 100%;
+    padding: 16px;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
-    color: #08080a;
-    background: white;
+    color: #ffffff;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
     border: none;
-    border-radius: 9px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: 0.25s;
-    margin-top: 8px;
+    transition: all 0.25s ease;
+    margin-top: 10px;
     text-align: center;
     text-decoration: none;
-    box-shadow: 0 0 30px rgba(255,255,255,0.08);
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    display: block;
 }
 
 .glass-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 35px rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    opacity: 0.95;
 }
 
 .glass-button:active {
@@ -122,18 +229,36 @@ body::after {
 }
 
 /* =========================================================
-   PROMPT
+   PROMPT / ALERTS
 ========================= */
 #alert-container {
     min-height: 20px;
-    margin-top: -8px;
-    margin-bottom: 4px;
     text-align: left;
     padding-left: 4px;
 }
 
 #prompt-text {
-    color: #ff6b81;
-    font-size: 12px;
+    color: #ef4444;
+    font-size: 13px;
     font-weight: 500;
+}
+
+/* =========================================================
+   FOOTER LINK
+========================= */
+.form-footer {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-top: 16px;
+}
+
+.form-footer a {
+    color: #4f46e5;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
 }

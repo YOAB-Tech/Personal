@@ -2,36 +2,123 @@
 {% block style %}
 <link rel="stylesheet" href="static/login.css">
 {% endblock %}
-{% block title %}Homepage{% endblock %}
+{% block title %}Create Account{% endblock %}
 {% block body %}
-<div class="login-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; width: 100%;">
-    <form action="/register" method="POST" class="glass-form" style="display: flex; flex-direction: column; width: 100%; max-width: 400px; padding: 40px; box-sizing: border-box; gap: 15px;">
+<div class="login-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+    <form action="/register" method="POST" class="glass-form">
 
-        <h2 class="form-title" style="text-align: center; margin-bottom: 25px;">Sign up</h2>
+        <!-- Top Icon -->
+        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+            <div style="width: 64px; height: 64px; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+        </div>
 
-        <input type="text" name="email" placeholder="Email" required class="glass-input" style="width: 100%; padding: 15px; box-sizing: border-box;">
+        <h2 class="form-title">Create Account</h2>
+        <p class="form-subtitle">Join us today! Fill in the details to get started.</p>
 
-        <!-- Username Input -->
-        <input type="text" name="username" placeholder="Username" required class="glass-input" style="width: 100%; padding: 15px; box-sizing: border-box; margin-bottom: 0;">
+        <!-- Full Name -->
+        <div class="input-group">
+            <label class="input-label">Full Name</label>
+            <div class="input-wrapper">
+                <div class="input-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <input type="text" name="fullname" placeholder="Enter your full name" required class="glass-input">
+            </div>
+        </div>
 
-        <!-- Alert Prompt Container (Appears right under username) -->
-        <div id="alert-container" style="min-height: 20px; margin-top: -10px; margin-bottom: 5px; text-align: left; padding-left: 5px;">
+        <!-- Email -->
+        <div class="input-group">
+            <label class="input-label">Email Address</label>
+            <div class="input-wrapper">
+                <div class="input-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <input type="email" name="email" placeholder="Enter your email" required class="glass-input">
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="input-group">
+            <label class="input-label">Password</label>
+            <div class="input-wrapper">
+                <div class="input-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <input type="password" name="password" placeholder="Create a password" required class="glass-input">
+                <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="input-group">
+            <label class="input-label">Confirm Password</label>
+            <div class="input-wrapper">
+                <div class="input-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <input type="password" name="confirm_password" placeholder="Confirm your password" required class="glass-input">
+                <button type="button" class="toggle-password" onclick="togglePassword('confirm_password')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Gender -->
+        <div class="input-group">
+            <label class="input-label">Gender</label>
+            <div class="radio-group">
+                <div class="radio-option" onclick="document.getElementById('male').click()">
+                    <input type="radio" id="male" name="gender" value="male">
+                    <label for="male">Male</label>
+                </div>
+                <div class="radio-option" onclick="document.getElementById('female').click()">
+                    <input type="radio" id="female" name="gender" value="female">
+                    <label for="female">Female</label>
+                </div>
+                <div class="radio-option" onclick="document.getElementById('others').click()">
+                    <input type="radio" id="others" name="gender" value="others">
+                    <label for="others">Others</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terms & Conditions -->
+        <div class="checkbox-group">
+            <input type="checkbox" id="terms" name="terms" required>
+            <label for="terms">I agree to the <a href="#">terms & conditions</a> and <a href="#">privacy policy</a></label>
+        </div>
+
+        <!-- Alert Prompt Container -->
+        <div id="alert-container">
             {% if prompt %}
-            <span id="prompt-text" style="color: #ff4d4d; font-size: 13px; font-weight: 500;">{{ prompt }}</span>
+            <span id="prompt-text">{{ prompt }}</span>
             {% endif %}
         </div>
 
-        <!-- Password Input -->
-        <input type="password" name="password" placeholder="Password" required class="glass-input" style="width: 100%; padding: 15px; box-sizing: border-box;">
+        <!-- Submit Button -->
+        <button type="submit" class="glass-button">Sign Up</button>
 
-        <input type="text" name="phonenumber" placeholder="Phone Number" class="glass-input" style="width: 100%; padding: 15px; box-sizing: border-box;">
-
-        <!-- The Button -->
-        <button type="submit" class="glass-button" style="width: 100%; padding: 15px; margin-top: 10px; cursor: pointer;">Sign up</button>
-
+        <div class="form-footer">
+            Already have an account? <a href="/login">Login</a>
+        </div>
     </form>
 </div>
 
-
-
+<script>
+    function togglePassword(inputName) {
+        const input = document.querySelector(`input[name="${inputName}"]`);
+        if (input.type === "password") {
+            input.type = "text";
+        } else {
+            input.type = "password";
+        }
+    }
+</script>
 {% endblock %}

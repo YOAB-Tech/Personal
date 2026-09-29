@@ -1,6 +1,7 @@
 from flask import render_template, redirect, request, Flask, session, url_for, jsonify
 from pathlib import Path
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 import shutil
 import sqlite3
 
@@ -105,10 +106,11 @@ def upload(username):
             fileinfo.append({
                 "filename" : file.filename,
                 "filepath": safe_path,
-                "filesize" : filesize
+                "filesize" : filesize,
+                "date" : datetime.now()
             })
         user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
-
+        user.file = fileinfo
         db.session.commit()
     return render_template("upload.html")
 
