@@ -183,6 +183,7 @@
 }
 
 .select-toggle {
+    font-family: inherit;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -205,20 +206,72 @@
 }
 
 /* Switch "on" state */
-#select-toggle:checked ~ .file-toolbar .select-toggle {
+#select-toggle:checked ~ .file-toolbar label.select-toggle {
     background: var(--accent-soft);
     border-color: var(--accent);
     color: var(--accent-strong);
 }
 
 /* Add the selection column to both the header and the rows */
+#delete, #addtoproject { display: none; }
+#select-toggle:checked ~ .file-toolbar #delete,
+#select-toggle:checked ~ .file-toolbar #addtoproject { display: inline-flex; }
 #select-toggle:checked ~ #file-list .file-list-header,
 #select-toggle:checked ~ #file-list .file-row {
     grid-template-columns: 18px 24px 1fr 90px 130px;
 }
 
-/* The little circle at the start of every row */
-#select-toggle:checked ~ #file-list .file-row::before {
+/* ---- The real checkbox --------------------------------------------
+   <input class="file-select"> is the FIRST child of every row, so it lands
+   in the 18px first column. It stays hidden until select mode is on. */
+.file-row .file-select {
+    display: none;
+}
+
+#select-toggle:checked ~ #file-list .file-row .file-select {
+    display: block;
+}
+
+.file-select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 50%;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    justify-self: center;
+    align-self: center;
+    transition: background-color 0.12s, border-color 0.12s;
+}
+
+.file-select:hover {
+    border-color: var(--accent);
+}
+
+/* checked = the colour change (+ a white tick) */
+.file-select:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-size: 11px 11px;
+}
+
+/* highlight the whole row while its checkbox is ticked */
+#select-toggle:checked ~ #file-list .file-row:has(.file-select:checked) {
+    background-color: var(--accent-soft);
+}
+
+/* ---- Fallback circle ----------------------------------------------
+   Rows with NO real checkbox still get a drawn circle, so select mode keeps
+   working on the rows homepage.js builds today. The moment you add the
+   checkbox in homepage.js, :has() stops matching and the ::before removes
+   itself — nothing to delete later. */
+#select-toggle:checked ~ #file-list .file-row:not(:has(.file-select))::before {
     content: "";
     grid-column: 1;
     width: 15px;
@@ -230,12 +283,14 @@
     transition: border-color 0.12s, background-color 0.12s;
 }
 
-#select-toggle:checked ~ #file-list .file-row:hover::before {
+#select-toggle:checked ~ #file-list .file-row:not(:has(.file-select)):hover::before {
     border-color: var(--accent);
 }
 
-/* Keep the header labels lined up with the extra column */
-#select-toggle:checked ~ #file-list .file-list-header::before {
+/* Keep the header labels lined up with the extra column.
+   Same guard: if you ever add a select-all checkbox to the header,
+   the dummy column removes itself automatically. */
+#select-toggle:checked ~ #file-list .file-list-header:not(:has(.file-select))::before {
     content: "";
     grid-column: 1;
 }
@@ -276,6 +331,32 @@
 .file-modified {
     color: var(--text-3);
     font-size: 13px;
+}
+
+/* =========================
+   LINK CELLS (<a> instead of <span>)
+   The row + header cells are anchors now so they can be tapped later, but they
+   must look identical to the old spans. These class selectors also match the
+   <span>s that homepage.js still creates, so both render the same.
+   ========================= */
+.file-icon,
+.file-name,
+.file-list-header a {
+    color: inherit;
+}
+
+.file-row a,
+.file-list-header a {
+    text-decoration: none;   /* also cancels the global a:hover underline */
+}
+
+/* hover cues instead of an underline */
+.file-name:hover {
+    color: var(--text);
+}
+
+.file-list-header a:hover {
+    color: var(--text-2);
 }
 
 /* =========================

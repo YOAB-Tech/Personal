@@ -115,8 +115,18 @@ Every token is declared twice: dark in `:root`, light under `html[data-theme="li
 | `.tabs`, `.tab`, `.tab-radio`, `.tab-panel` | 🆕 | tab styling |
 | `.dash-header`, `.breadcrumb`, `.dash-subtitle`, `.file-toolbar`, `.toolbar-spacer` | 🆕 | dashboard header/toolbar |
 | `.placeholder-panel`, `.placeholder-icon` | 🆕 | Projects/Posts empty states |
+| `#select-toggle`, `.select-toggle`, `.select-toggle-input` | 🆕 | CSS-only "Select" switch — **must stay a sibling before `#file-list`** |
+| `.file-select` | 🆕 | the real per-row checkbox; **first child** of a `.file-row` |
 
 Tabs are pure CSS: `#tab-files:checked ~ #panel-files { display:block }` etc. — no JS needed.
+
+**Cells are anchors.** Inside `#file-list`, the header labels (`.col-name`, `.col-size`,
+`.col-modified`) and the row cells (`.file-icon`, `.file-name`, `.file-size`,
+`.file-modified`) are now `<a href="#">` instead of `<span>`. Class names are unchanged,
+so `homepage.js` — which still creates `<span>`s — renders identically; the CSS covers
+both element types. `.col-gutter` stays a `<span>` (it's an empty spacer). Spans that sit
+**inside** an existing `<a>` (`.brand-text`, `.nav-icon`, `.nav-text`, the compose-button
+label) were left as spans, because nesting `<a>` inside `<a>` is invalid HTML.
 
 ### 3.4 `templates/upload.html` — uploader
 
@@ -153,17 +163,15 @@ Tabs are pure CSS: `#tab-files:checked ~ #panel-files { display:block }` etc. �
 
 ## 4. Known notes
 
-1. **Two emoji remain, by design:** `.file-icon` (file rows) and `.preview-icon`
-   (upload preview rows) are built by `homepage.js` / `upload.js`. Since those files
-   must not change, their icons stay emoji. Swap them to inline SVG inside those two
-   JS files if you want full line-icon consistency.
+1. **Emoji left:** `homepage.js` now renders `.file-icon` from the `ICONS` SVG constants
+   ✅, but `upload.js` still sets `.preview-icon` to `📄` / `📂`, and the two placeholder
+   rows in `homepage.html` still use emoji (they're removed by JS on load).
 2. **Unused assets:** `static/background1.jpg`, `static/home.png`, `static/repo.png`,
    `static/style.css`, `static/index.css` are no longer referenced — safe to delete.
-3. **Pre-existing data mismatches (untouched):**
-   - `homepage.js` reads `item.name` / `item.size`, but `/api/files/<user>` returns
-     `filename` / `filesize` → rows can show `undefined` until one side is aligned.
-   - The register form sends `fullname` but no `username`/`phoneNumber`, while
-     `register()` in `app.py` reads `username` / `email` / `phoneNumber`.
+3. **Pre-existing data mismatches:**
+   - ✅ Fixed — `homepage.js` now reads `item.filename` / `item.filesize`.
+   - Still open — the register form sends `fullname` but no `username`/`phoneNumber`,
+     while `register()` in `app.py` reads `username` / `email` / `phoneNumber`.
 4. **Pre-existing JS ordering:** `homepage.js` assigns `permutation = []` after calling
    `init()`; it works only because that line runs synchronously before the fetch
    resolves. Fragile, but left untouched.
@@ -173,3 +181,34 @@ Tabs are pure CSS: `#tab-files:checked ~ #panel-files { display:block }` etc. �
      .addEventListener('click', () => document.getElementById('composer-input').focus());
    ```
    Same idea for `#post-button`, `#refresh-button` and the filter buttons.
+
+---
+
+## 5. Change log
+
+### Select mode + tappable cells (latest)
+
+**`templates/homepage.html`**
+- Added `<input type="checkbox" class="file-select">` as the **first child** of each
+  placeholder `.file-row`. First child matters — that's what puts it in the 18px column.
+- Converted the file-list cells from `<span>` to `<a href="#">`: `.col-name`, `.col-size`,
+  `.col-modified`, `.file-icon`, `.file-name`, `.file-size`, `.file-modified`.
+- `.sidebar-avatar` is now `<a href="/homepage/{{ session['user'] }}">`.
+- Left as `<span>` on purpose: `.col-gutter` (empty spacer — an empty link is meaningless),
+  `.search-icon` (decorative), and `.brand-text` / `.nav-icon` / `.nav-text` /
+  compose-button label, because those already sit inside an `<a>` and nesting anchors
+  is invalid HTML.
+
+**`static/homepage.css`**
+- New `LINK CELLS` block — `color: inherit` + `text-decoration: none` so the anchors look
+  exactly like the old spans, with hover colour cues instead of the global underline.
+- New `SELECT MODE` block — `.file-select` circle (hidden until select mode is on),
+  `.file-select:checked` accent fill + white tick, and a selected-row tint via `:has()`.
+- The drawn `::before` circle is now guarded by `:not(:has(.file-select))`. It applies
+  only to rows with **no** real checkbox (what `homepage.js` builds today) and removes
+  itself automatically once JS adds one — so there is nothing to delete later.
+
+**Still yours to do in `homepage.js`**
+- For the *live* rows to be tappable, create `<a class="file-name">` (with `.href`)
+  instead of `<span class="file-name">` — the CSS already handles both.
+- Add the `rowData` Map + the per-row checkbox so you can read the selection.

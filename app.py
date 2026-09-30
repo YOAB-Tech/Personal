@@ -2,14 +2,17 @@ from flask import render_template, redirect, request, Flask, session, url_for, j
 from pathlib import Path, PurePosixPath
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
+from werkzeug.security import generate_password_hash, check_password_hash
 import shutil
 import sqlite3
 from sqlalchemy import null, JSON
 
 ##DEFAULT SETTINGS
 app = Flask(__name__)
+maxlength = 100
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.sqlite3'
 app.config['SECRET_KEY'] = 'mysterious_yoab_admin_SECRET_KEY_cookie'
+app.config['MAX_CONTENT_LENGTH'] = maxlength * 1024 * 1024
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -59,13 +62,11 @@ def login():
         password = request.form.get("password")
         result = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
         if result:
-            if password == result.password:
+            if check_password_hash(result.password, password):
                 session['user'] = result.username
                 return redirect(f"/homepage/{result.username}")
             else:
                 return render_template("login.html",prompt = "Password does not match")
-        else:
-            return redirect("/register")
     return render_template("login.html")
 
 @app.route('/register',methods=['GET', 'POST'])
@@ -73,6 +74,8 @@ def register():
     if request.method == 'POST':
         username = request.form.get("username")
         password = request.form.get("password")
+        if password != request.form.get("confirm_password"):
+            return render_template("register.html", prompt = "Password does not match")
         email = request.form.get("email")
         phonenumber = request.form.get("phoneNumber")
         result = db.session.execute(db.select(User).where(User.username == username or User.email == email)).scalar_one_or_none()
@@ -82,7 +85,7 @@ def register():
             if result.username == username:
                 return render_template("register.html", prompt = "Username already exists")
         id = db.session.execute(db.select(db.func.count()).select_from(User)).scalar()+1
-        user = User(id = id, username = username, password = password, email = email, phonenumber = phonenumber, file = None)
+        user = User(id = id, username = username, password=generate_password_hash(password), email = email, phonenumber = phonenumber, file = None)
         db.session.add(user)
         db.session.commit()
         return redirect("/login")
@@ -92,6 +95,8 @@ def register():
 def homepage(username):
     if 'user' not in session or session.get('user') is None:
         return redirect("/login")
+    if session.get('user') != username:
+        return redirect(f"/homepage/{session.get('user')}")
     user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
     Path(f'Repo/{username}').mkdir(parents=True, exist_ok=True)
     file_existence = user.file
@@ -107,6 +112,8 @@ def repo():
 
 @app.route('/upload/<string:username>',methods=['GET', 'POST'])
 def upload(username):
+    if 'user' not in session or session.get('user') is None or session.get('user') != username:
+        return redirect("/login")
     if request.method == 'POST':
         Path(f'Repo/{username}').mkdir(parents=True, exist_ok= True)
         personalfolder = Path(f'Repo/{username}')
@@ -164,6 +171,28 @@ def files(username):
     db.session.commit()
     return jsonify(user.file or [])
 
+@app.route('/api/filedelete/<string:username>/<string:name>')
+def filedelete(username, name):
+    if session.get('user') is None or session.get('user') != username:
+        return jsonify({"ok": False, "error": "forbidden"}),403
+    user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
+    if user is None:
+        return jsonify({"ok": False, "error": "no user"}),404
+    base = (Path('Repo') / username).resolve()
+    target =(base/name).resolve()
+    if not target.is_relative_to(base):
+        return jsonify({"ok": False, "error": "Invalid path"}),400
+    if not target.exists():
+        return jsonify({"ok": False, "error": "file not found"}),404
+    if target.is_dir():
+        shutil.rmtree(target)
+    else:
+        target.unlink()
+    for i in user.file:
+        if i.filename == name:
+            i.delete()
+    db.session.commit()
+    return jsonify({"ok": True})
 #API SECTION
 if __name__ == '__main__':
     with app.app_context():

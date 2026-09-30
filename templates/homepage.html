@@ -40,9 +40,9 @@
 
         <div class="sidebar-footer">
             <div class="sidebar-user">
-                <span class="sidebar-avatar">
+                <a href="/homepage/{{ session['user'] }}" class="sidebar-avatar" aria-label="Your profile">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                </span>
+                </a>
                 <div class="sidebar-user-text">
                     <div class="sidebar-username">{{ session['user'] }}</div>
                     <div class="sidebar-sub">Your workspace</div>
@@ -91,6 +91,8 @@
                 </div>
                 <div class="toolbar-spacer"></div>
                 <label for="select-toggle" class="select-toggle">Select</label>
+                <button class = "select-toggle" id = 'delete' >Delete</button>
+                <button class = "select-toggle" id = 'addtoproject'>Add to project</button>
                 <select id="sort-select" class="sort-select" aria-label="Sort files">
                     <option value="name">Sort: Name</option>
                     <option value="date">Sort: Date modified</option>
@@ -104,24 +106,28 @@
             <div class="file-list" id="file-list" data-user="{{ session['user'] }}">
                 <div class="file-list-header">
                     <span class="col-gutter"></span>
-                    <span class="col-name">Name</span>
-                    <span class="col-size">Size</span>
-                    <span class="col-modified">Modified</span>
+                    <a href="#" class="col-name">Name</a>
+                    <a href="#" class="col-size">Size</a>
+                    <a href="#" class="col-modified">Modified</a>
                 </div>
 
-                <!-- Placeholder rows — homepage.js replaces these with real data -->
+                <!-- Placeholder rows — homepage.js replaces these with real data.
+                     .file-select MUST be the first child so it lands in the 18px
+                     select column. Mirror this order in homepage.js. -->
                 <div class="file-row folder">
-                    <span class="file-icon">📁</span>
-                    <span class="file-name">my_folder/</span>
-                    <span class="file-size">—</span>
-                    <span class="file-modified">2 hours ago</span>
+                    <input type="checkbox" class="file-select" aria-label="Select my_folder">
+                    <a href="#" class="file-icon">📁</a>
+                    <a href="#" class="file-name">my_folder/</a>
+                    <a href="#" class="file-size">—</a>
+                    <a href="#" class="file-modified">2 hours ago</a>
                 </div>
 
                 <div class="file-row">
-                    <span class="file-icon">📄</span>
-                    <span class="file-name">intro.md</span>
-                    <span class="file-size">4 KB</span>
-                    <span class="file-modified">2 hours ago</span>
+                    <input type="checkbox" class="file-select" aria-label="Select intro.md">
+                    <a href="#" class="file-icon">📄</a>
+                    <a href="#" class="file-name">intro.md</a>
+                    <a href="#" class="file-size">4 KB</a>
+                    <a href="#" class="file-modified">2 hours ago</a>
                 </div>
 
                 {% if not file_existence %}
