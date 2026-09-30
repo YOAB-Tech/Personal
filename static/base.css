@@ -1,0 +1,645 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* =========================================================
+   DESIGN TOKENS — flat, X / Reddit-like, minimal rounding.
+   Dark is default; light applies when #theme-toggle is checked.
+   ========================================================= */
+:root {
+    --bg: #0e0e11;
+    --bg-soft: #141417;
+    --surface: #17171b;
+    --surface-2: #1d1d22;
+    --surface-3: #24242a;
+    --border: #26262d;
+    --border-strong: #34343c;
+
+    --text: #e6e6ea;
+    --text-2: #a3a3ac;
+    --text-3: #73737c;
+
+    --accent: #6b74f0;
+    --accent-strong: #8b93ff;
+    --accent-soft: rgba(107, 116, 240, 0.14);
+    --accent-contrast: #ffffff;
+
+    --green: #2ea97c;
+    --green-soft: rgba(46, 169, 124, 0.14);
+    --red: #e05252;
+
+    --glass: rgba(22, 22, 27, 0.72);
+    --glass-strong: rgba(22, 22, 27, 0.9);
+
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+
+    /* Deliberately small — avoids the "soft AI" look */
+    --radius-lg: 6px;
+    --radius: 4px;
+    --radius-sm: 4px;
+
+    --sidebar-w: 272px;
+    --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Light theme: applied by the persisted data-theme attribute, with a
+   CSS-only fallback via :has() if JavaScript is unavailable. */
+html[data-theme="light"],
+html:has(#theme-toggle:checked) {
+    --bg: #f5f6f8;
+    --bg-soft: #eef0f3;
+    --surface: #ffffff;
+    --surface-2: #f1f2f5;
+    --surface-3: #e7e9ee;
+    --border: #d9dbe1;
+    --border-strong: #c3c6ce;
+
+    --text: #16181d;
+    --text-2: #4b4f57;
+    --text-3: #81858f;
+
+    --accent: #4f46e5;
+    --accent-strong: #4338ca;
+    --accent-soft: rgba(79, 70, 229, 0.10);
+    --accent-contrast: #ffffff;
+
+    --green: #1a7f52;
+    --green-soft: rgba(26, 127, 82, 0.12);
+    --red: #c93030;
+
+    --glass: rgba(255, 255, 255, 0.82);
+    --glass-strong: rgba(255, 255, 255, 0.92);
+
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================================
+   RESET / BASE
+   ========================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.55;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background: var(--accent-soft);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--text);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* =========================================================
+   LINE ICONS — stroke uses currentColor, so they follow the
+   theme (white on dark, black on light) automatically.
+   ========================================================= */
+.icon {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   THEME TOGGLE (CSS-only, checkbox in layout.html)
+   ========================================================= */
+.theme-toggle-input {
+    position: fixed;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.theme-toggle {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 90;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s, background-color 0.18s, border-color 0.18s;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px);
+}
+
+.theme-toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+.toggle-icon-moon {
+    display: none;
+}
+
+/* dark shows the sun (click -> light); light shows the moon */
+html[data-theme="light"] .toggle-icon-sun,
+html:has(#theme-toggle:checked) .toggle-icon-sun {
+    display: none;
+}
+
+html[data-theme="light"] .toggle-icon-moon,
+html:has(#theme-toggle:checked) .toggle-icon-moon {
+    display: grid;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.primary-button,
+.secondary-button,
+.ghost-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.primary-button {
+    background: var(--accent);
+    color: var(--accent-contrast);
+}
+
+.primary-button:hover {
+    background: var(--accent-strong);
+    text-decoration: none;
+}
+
+.secondary-button {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.secondary-button:hover {
+    border-color: var(--border-strong);
+    text-decoration: none;
+}
+
+.ghost-button {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text-2);
+}
+
+.ghost-button:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+    text-decoration: none;
+}
+
+.icon-button {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+    flex-shrink: 0;
+}
+
+.icon-button:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+    background: var(--surface-2);
+}
+
+.icon-button svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* =========================================================
+   APP SHELL — sidebar + main
+   ========================================================= */
+.app {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    min-height: 100vh;
+    align-items: start;
+}
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-right: 1px solid var(--border);
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    margin-bottom: 2px;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--text);
+}
+
+.sidebar-brand:hover {
+    text-decoration: none;
+}
+
+.sidebar-brand svg {
+    width: 26px;
+    height: 26px;
+    color: var(--accent);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    color: var(--text-2);
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.12s, color 0.12s;
+}
+
+.nav-item:hover {
+    background: var(--surface-2);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.nav-item.active {
+    color: var(--text);
+    font-weight: 700;
+}
+
+.nav-icon {
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+
+.nav-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* X-style compose button */
+.compose-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 12px 4px 0;
+    padding: 13px;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.15s;
+}
+
+.compose-button:hover {
+    background: var(--accent-strong);
+    text-decoration: none;
+}
+
+.compose-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Account chip (X puts this at the bottom) */
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.12s;
+}
+
+.sidebar-user:hover {
+    background: var(--surface-2);
+}
+
+.sidebar-avatar {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    flex-shrink: 0;
+}
+
+.sidebar-avatar svg {
+    width: 18px;
+    height: 18px;
+}
+
+.sidebar-user-text {
+    min-width: 0;
+}
+
+.sidebar-username {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sidebar-sub {
+    font-size: 12px;
+    color: var(--text-3);
+}
+
+.sidebar-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 12px 12px 4px;
+}
+
+.app-main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+.search-box {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-3);
+    display: flex;
+    pointer-events: none;
+}
+
+.search-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 9px 14px 9px 38px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.search-input::placeholder {
+    color: var(--text-3);
+}
+
+.search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+    outline: none;
+}
+
+/* =========================================================
+   GENERIC PANELS / SHELLS
+   ========================================================= */
+.card,
+.panel,
+.content-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+}
+
+.page-shell {
+    width: min(960px, 100%);
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+}
+
+.content-card {
+    padding: 36px 40px;
+    box-shadow: var(--shadow);
+}
+
+.page-back {
+    position: fixed;
+    top: 22px;
+    left: 24px;
+    z-index: 30;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--text-2);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.page-back:hover {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.is-hidden {
+    display: none !important;
+}
+
+.muted {
+    color: var(--text-3);
+}
+
+/* Smooth color transition when switching themes */
+body,
+.sidebar,
+.card,
+.panel,
+.content-card,
+.glass-form,
+.post,
+.file-list,
+.file-row,
+.file-list-header,
+.drop-zone,
+.composer,
+.search-input,
+input,
+textarea,
+select,
+button {
+    transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+/* =========================================================
+   RESPONSIVE / MOTION
+   ========================================================= */
+@media (max-width: 760px) {
+    .app {
+        grid-template-columns: 64px 1fr;
+    }
+
+    .sidebar {
+        padding: 10px 6px;
+        align-items: center;
+    }
+
+    .sidebar-brand {
+        padding: 10px 0;
+    }
+
+    .sidebar-brand .brand-text,
+    .sidebar-user,
+    .nav-item .nav-text,
+    .compose-button span {
+        display: none;
+    }
+
+    .nav-item {
+        justify-content: center;
+        padding: 10px;
+        gap: 0;
+    }
+
+    .compose-button {
+        margin: 8px 0 0;
+        padding: 10px;
+        width: 40px;
+    }
+
+    .sidebar-footer .secondary-button,
+    .sidebar-footer .ghost-button {
+        padding: 8px 4px;
+        font-size: 11px;
+    }
+
+    .content-card {
+        padding: 28px 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}

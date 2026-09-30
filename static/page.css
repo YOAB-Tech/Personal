@@ -1,0 +1,102 @@
+/* =========================================================
+   CONTENT PAGES (about.html / Repo.html)
+   Relies on tokens from base.css
+   ========================================================= */
+
+.eyebrow {
+    display: inline-block;
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.page-title {
+    font-size: clamp(26px, 4vw, 34px);
+    margin: 12px 0 8px;
+}
+
+.page-lead {
+    color: var(--text-3);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 560px;
+}
+
+/* Contact list (about) */
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 26px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text-2);
+    text-decoration: none;
+    font-size: 14px;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.contact-item:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.contact-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    flex-shrink: 0;
+}
+
+.contact-icon svg {
+    width: 17px;
+    height: 17px;
+}
+
+.contact-meta {
+    margin-left: auto;
+    color: var(--text-3);
+    font-size: 12.5px;
+}
+
+/* Repo empty state */
+.repo-empty {
+    margin-top: 26px;
+    padding: 56px 20px;
+    text-align: center;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-lg);
+}
+
+.repo-empty-icon {
+    display: flex;
+    justify-content: center;
+    color: var(--text-3);
+    margin-bottom: 14px;
+}
+
+.repo-empty-icon svg {
+    width: 44px;
+    height: 44px;
+}
+
+.repo-empty p {
+    color: var(--text-3);
+    font-size: 14px;
+    margin-bottom: 18px;
+}

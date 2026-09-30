@@ -1,0 +1,437 @@
+/* =========================================================
+   FEED PAGE (index.html) — search, posts, right rail,
+   bottom-fixed composer. Relies on base.css tokens + shell.
+   ========================================================= */
+
+.feed-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 24px;
+    background: var(--glass-strong);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+}
+
+.feed-topbar .search-box {
+    flex: 1;
+    max-width: 560px;
+}
+
+/* =========================================================
+   LAYOUT — feed column + right rail (Reddit-ish)
+   ========================================================= */
+.feed-layout {
+    width: min(1150px, 100%);
+    margin: 0 auto;
+    padding: 20px 24px 110px; /* bottom clears the fixed composer */
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 24px;
+    align-items: start;
+}
+
+.feed-column {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Right rail */
+.right-rail {
+    position: sticky;
+    top: 76px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rail-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+}
+
+.rail-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-3);
+    margin-bottom: 12px;
+}
+
+.tag-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.tag-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tag-link {
+    padding: 7px 8px;
+    border-radius: var(--radius-sm);
+    color: var(--text-2);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.tag-link:hover {
+    background: var(--surface-2);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.tag-count {
+    color: var(--text-3);
+    font-size: 12px;
+}
+
+.rail-text {
+    color: var(--text-3);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+/* =========================================================
+   FILTER BAR
+   ========================================================= */
+.filter-bar {
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid var(--border);
+}
+
+.filter-btn {
+    padding: 9px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-3);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    transition: color 0.12s, background-color 0.12s;
+}
+
+.filter-btn:hover {
+    color: var(--text);
+    background: var(--surface-2);
+}
+
+.filter-btn.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+}
+
+/* =========================================================
+   POST CARDS
+   ========================================================= */
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.post {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+}
+
+.post:hover {
+    border-color: var(--border-strong);
+}
+
+.post-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.post-avatar {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    flex-shrink: 0;
+}
+
+.post-avatar svg {
+    width: 17px;
+    height: 17px;
+}
+
+.post-authorline {
+    min-width: 0;
+}
+
+.post-author {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.post-meta {
+    font-size: 12px;
+    color: var(--text-3);
+}
+
+.post-menu {
+    margin-left: auto;
+    border: none;
+    background: transparent;
+    color: var(--text-3);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    display: grid;
+    place-items: center;
+}
+
+.post-menu:hover {
+    color: var(--text);
+    background: var(--surface-2);
+}
+
+.post-menu svg {
+    width: 18px;
+    height: 18px;
+}
+
+.post-type {
+    padding: 1px 7px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.post-type.project {
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+}
+
+.post-type.thought {
+    background: var(--green-soft);
+    color: var(--green);
+}
+
+.post-title {
+    margin: 12px 0 5px;
+    font-size: 16px;
+}
+
+.post-title a {
+    color: var(--text);
+}
+
+.post-title a:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.post-body {
+    color: var(--text-2);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.post-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.post-tag {
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    color: var(--text-2);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.post-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+.post-action {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px;
+    border: none;
+    background: transparent;
+    color: var(--text-3);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.12s, color 0.12s;
+}
+
+.post-action svg {
+    width: 16px;
+    height: 16px;
+}
+
+.post-action:hover {
+    background: var(--surface-2);
+    color: var(--text);
+}
+
+.post-action.liked {
+    color: var(--accent-strong);
+}
+
+/* =========================================================
+   BOTTOM-FIXED COMPOSER (like X)
+   ========================================================= */
+.composer-bar {
+    position: fixed;
+    left: var(--sidebar-w);
+    right: 0;
+    bottom: 0;
+    z-index: 35;
+    padding: 12px 0 14px;
+    background: var(--glass-strong);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+}
+
+.composer-bar-inner {
+    width: min(1150px, 100%);
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 24px;
+}
+
+.composer {
+    grid-column: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+}
+
+.composer-avatar {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    flex-shrink: 0;
+}
+
+.composer-avatar svg {
+    width: 17px;
+    height: 17px;
+}
+
+.composer-input {
+    flex: 1;
+    min-width: 0;
+    min-height: 34px;
+    max-height: 120px;
+    padding: 7px 0;
+    resize: none;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.4;
+    outline: none;
+    overflow-y: auto;
+}
+
+.composer-input::placeholder {
+    color: var(--text-3);
+}
+
+.composer-hint {
+    font-size: 12px;
+    color: var(--text-3);
+    padding-bottom: 9px;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 1400px) {
+    .feed-layout {
+        grid-template-columns: minmax(0, 760px);
+        justify-content: center;
+    }
+
+    .right-rail {
+        display: none;
+    }
+
+    .composer-bar-inner {
+        grid-template-columns: minmax(0, 760px);
+        justify-content: center;
+    }
+}
+
+@media (max-width: 760px) {
+    .feed-topbar {
+        padding: 10px 16px;
+    }
+
+    .feed-layout {
+        padding: 16px 16px 100px;
+    }
+
+    .composer-bar {
+        left: 64px;
+    }
+
+    .composer-bar-inner {
+        padding: 0 16px;
+    }
+
+    .composer-hint {
+        display: none;
+    }
+}
