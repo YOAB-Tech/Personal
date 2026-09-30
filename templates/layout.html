@@ -1,7 +1,23 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
     <head>
-        <meta name="viewport" content="initial-scale = 1, width = device-width" charset="utf-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" id="theme-color-meta" content="#0e0e11">
+        <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236b74f0'/%3E%3Cpath d='M8 11.5 16 7.5l8 4v9l-8 4-8-4z' fill='none' stroke='%23fff' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+        <script>
+            /* Apply the saved theme BEFORE the page paints, so there is no flash
+               and every page opens in the theme you last picked. */
+            (function () {
+                try {
+                    var saved = localStorage.getItem('theme');
+                    if (saved === 'light' || saved === 'dark') {
+                        document.documentElement.setAttribute('data-theme', saved);
+                    }
+                } catch (e) { /* localStorage unavailable — fall back to dark */ }
+            })();
+        </script>
+        <link rel="stylesheet" href="/static/base.css">
         {% block style %}{% endblock %}
         <title>
             {% block title %}{% endblock %}
@@ -9,9 +25,46 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
-        <div class="background-glow glow-1"></div>
-        <div class="background-glow glow-2"></div>
+        <!-- Light/dark toggle. Works on every page and remembers your choice. -->
+        <input type="checkbox" id="theme-toggle" class="theme-toggle-input" aria-label="Toggle light or dark mode">
+        <label for="theme-toggle" class="theme-toggle" title="Toggle light/dark mode">
+            <span class="toggle-icon toggle-icon-sun" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </span>
+            <span class="toggle-icon toggle-icon-moon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </span>
+        </label>
         {% block body %}
         {% endblock %}
+        <script>
+            /* Sync the switch with the saved theme and persist every change. */
+            (function () {
+                var box = document.getElementById('theme-toggle');
+                var meta = document.getElementById('theme-color-meta');
+                var root = document.documentElement;
+
+                if (!box) return;
+
+                function apply(theme, remember) {
+                    root.setAttribute('data-theme', theme);
+                    if (meta) {
+                        meta.setAttribute('content', theme === 'light' ? '#f5f6f8' : '#0e0e11');
+                    }
+                    if (remember) {
+                        try { localStorage.setItem('theme', theme); } catch (e) {}
+                    }
+                }
+
+                /* Reflect the stored theme on the switch itself */
+                var current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+                box.checked = (current === 'light');
+                apply(current, false);
+
+                box.addEventListener('change', function () {
+                    apply(box.checked ? 'light' : 'dark', true);
+                });
+            })();
+        </script>
     </body>
 </html>

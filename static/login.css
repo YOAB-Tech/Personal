@@ -1,67 +1,80 @@
 /* =========================================================
-   GLOBAL
+   AUTH PAGES (login.html / register.html)
+   Relies on tokens from base.css
    ========================================================= */
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.login-container {
     min-height: 100vh;
-    margin: 0;
-    background: #f8f9fc; /* Light gray/blue background */
-    font-family: "Inter", system-ui, -apple-system, sans-serif;
-    color: #1a1a1a;
-    padding: 20px;
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 72px 20px 56px;
 }
 
-/* =========================================================
-   LOGIN/REGISTER CARD
-   ========================================================= */
+/* =========================
+   CARD
+   ========================= */
 .glass-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 40px;
+    gap: 15px;
+    padding: 34px 32px;
     width: 100%;
-    max-width: 440px;
-    border-radius: 24px;
-    background: #ffffff;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04), 0 2px 10px rgba(0, 0, 0, 0.02);
-    border: 1px solid #f0f0f5;
+    max-width: 420px;
+    border-radius: var(--radius-lg);
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.form-avatar {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 2px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+}
+
+.form-avatar svg {
+    width: 26px;
+    height: 26px;
 }
 
 .form-title {
-    color: #000000;
     text-align: center;
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 32px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
 }
 
 .form-subtitle {
     text-align: center;
-    color: #666666;
-    font-size: 15px;
-    margin-bottom: 24px;
-    margin-top: 0;
+    color: var(--text-3);
+    font-size: 14px;
+    margin: 0 0 4px;
 }
 
-/* =========================================================
-   INPUT LABELS & CONTAINERS
-========================= */
+/* =========================
+   INPUTS
+   ========================= */
 .input-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
 }
 
 .input-label {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
-    color: #111;
+    color: var(--text-2);
     margin-left: 2px;
 }
 
@@ -74,59 +87,60 @@ body {
 
 .input-icon {
     position: absolute;
-    left: 16px;
-    color: #4f46e5;
+    left: 14px;
+    color: var(--text-3);
     display: flex;
-    align-items: center;
-    justify-content: center;
     pointer-events: none;
+}
+
+.input-wrapper:focus-within .input-icon {
+    color: var(--accent);
 }
 
 .toggle-password {
     position: absolute;
-    right: 16px;
-    color: #9ca3af;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    right: 12px;
+    color: var(--text-3);
     background: none;
     border: none;
-    padding: 0;
+    padding: 4px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
 }
 
-/* =========================================================
-   INPUTS
-========================= */
+.toggle-password:hover {
+    color: var(--text);
+}
+
 .glass-input {
     width: 100%;
-    padding: 14px 16px 14px 48px; /* Left padding for icon */
+    padding: 11px 42px 11px 44px;
     font-family: inherit;
     font-size: 15px;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    background: #ffffff;
-    color: #111;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
     outline: none;
-    transition: all 0.2s ease;
-    box-sizing: border-box;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .glass-input::placeholder {
-    color: #9ca3af;
+    color: var(--text-3);
 }
 
 .glass-input:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
-/* =========================================================
-   RADIO BUTTONS (Gender)
-========================= */
+/* =========================
+   RADIO (Gender)
+   ========================= */
 .radio-group {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
 }
 
@@ -136,59 +150,65 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 14px;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    padding: 11px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: all 0.2s ease;
-    background: #fff;
+    background: var(--surface);
+    transition: border-color 0.15s, background-color 0.15s;
 }
 
 .radio-option:hover {
-    border-color: #d1d5db;
-    background: #f9fafb;
+    border-color: var(--border-strong);
+}
+
+.radio-option:has(input:checked) {
+    border-color: var(--accent);
+    background: var(--accent-soft);
 }
 
 .radio-option input[type="radio"] {
-    accent-color: #4f46e5;
-    width: 18px;
-    height: 18px;
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
     margin: 0;
 }
 
 .radio-option label {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
-    color: #111;
+    color: var(--text-2);
     cursor: pointer;
 }
 
-/* =========================================================
-   CHECKBOX
-========================= */
+/* =========================
+   CHECKBOX (Terms)
+   ========================= */
 .checkbox-group {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .checkbox-group input[type="checkbox"] {
-    accent-color: #4f46e5;
-    width: 18px;
-    height: 18px;
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
     cursor: pointer;
+    margin-top: 2px;
+    flex-shrink: 0;
 }
 
 .checkbox-group label {
-    font-size: 14px;
-    color: #4b5563;
+    font-size: 13px;
+    color: var(--text-2);
     cursor: pointer;
+    line-height: 1.5;
 }
 
 .checkbox-group a {
-    color: #4f46e5;
-    text-decoration: none;
+    color: var(--accent);
     font-weight: 600;
 }
 
@@ -196,69 +216,66 @@ body {
     text-decoration: underline;
 }
 
-/* =========================================================
-   BUTTON
-========================= */
+/* =========================
+   SUBMIT BUTTON
+   ========================= */
 .glass-button {
     width: 100%;
-    padding: 16px;
+    padding: 12px;
     font-family: inherit;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
-    color: #ffffff;
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: var(--accent-contrast);
+    background: var(--accent);
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: all 0.25s ease;
-    margin-top: 10px;
+    margin-top: 6px;
     text-align: center;
     text-decoration: none;
-    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
     display: block;
+    transition: background-color 0.15s;
 }
 
 .glass-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
-    opacity: 0.95;
+    background: var(--accent-strong);
 }
 
-.glass-button:active {
-    transform: translateY(0);
-}
-
-/* =========================================================
+/* =========================
    PROMPT / ALERTS
-========================= */
+   ========================= */
 #alert-container {
-    min-height: 20px;
-    text-align: left;
-    padding-left: 4px;
+    min-height: 16px;
+    padding-left: 2px;
 }
 
 #prompt-text {
-    color: #ef4444;
+    color: var(--red);
     font-size: 13px;
     font-weight: 500;
 }
 
-/* =========================================================
+/* =========================
    FOOTER LINK
-========================= */
+   ========================= */
 .form-footer {
     text-align: center;
     font-size: 14px;
-    color: #666;
-    margin-top: 16px;
+    color: var(--text-3);
+    margin-top: 4px;
 }
 
 .form-footer a {
-    color: #4f46e5;
+    color: var(--accent);
     font-weight: 600;
-    text-decoration: none;
 }
 
 .form-footer a:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .glass-form {
+        padding: 28px 20px;
+    }
 }

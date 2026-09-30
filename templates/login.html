@@ -1,20 +1,20 @@
 {% extends "layout.html" %}
 {% block style %}
-<link rel="stylesheet" href="static/login.css">
+<link rel="stylesheet" href="/static/login.css">
 {% endblock %}
 {% block title %}Sign In{% endblock %}
 {% block body %}
-<div class="login-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+<a href="/" class="page-back">← Back to home</a>
+
+<div class="login-container">
     <form action="/login" method="POST" class="glass-form">
 
         <!-- Top Icon -->
-        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-            <div style="width: 64px; height: 64px; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-            </div>
+        <div class="form-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
         </div>
 
         <h2 class="form-title">Sign In</h2>
@@ -39,7 +39,7 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 </div>
                 <input type="password" name="password" placeholder="Enter your password" required class="glass-input">
-                <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                <button type="button" class="toggle-password" onclick="togglePassword('password')" aria-label="Show password">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 </button>
             </div>

@@ -23,6 +23,18 @@ class User(db.Model):
     file = db.Column(db.JSON,nullable=True)
     def __repr__(self):
         return f"User('{self.username}')"
+
+class Settings(db.Model):
+    __tablename__ = 'Settings'
+    id = db.Column(db.Integer, primary_key=True)
+    theme = db.Column(db.Boolean, default=True)
+    subscription = db.Column(db.Boolean, default=False)
+
+class Files(db.Model):
+    __tablename__ = 'Files'
+    author_id = db.Column(db.Integer, db.ForeignKey('User.id'), primary_key=True)
+    file_id = db.Column(db.Integer, unique = True)
+    filename = db.Column(db.String(80), nullable=False)
 ##DEFAULT SETTINGS
 #HELPING FUNCTION
 def totalsize(folder):
@@ -34,6 +46,7 @@ def totalsize(folder):
             total+=totalsize(item)
     return total
 
+##Formal URL
 @app.route('/')
 def index():
     user = session.get('user')
@@ -80,6 +93,7 @@ def homepage(username):
     if 'user' not in session or session.get('user') is None:
         return redirect("/login")
     user = db.session.execute(db.select(User).where(User.username == username)).scalar_one_or_none()
+    Path(f'Repo/{username}').mkdir(parents=True, exist_ok=True)
     file_existence = user.file
     return render_template("homepage.html", file_existence = file_existence)
 
