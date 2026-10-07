@@ -11,7 +11,7 @@ from sqlalchemy import null, JSON
 app = Flask(__name__)
 maxlength = 100
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.sqlite3'
-app.config['SECRET_KEY'] = 'mysterious_yoab_admin_SECRET_KEY_cookie'
+app.config['SECRET_KEY'] = '20120826'
 app.config['MAX_CONTENT_LENGTH'] = maxlength * 1024 * 1024
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
